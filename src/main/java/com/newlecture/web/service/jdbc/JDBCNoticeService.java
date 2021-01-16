@@ -1,7 +1,6 @@
 package com.newlecture.web.service.jdbc;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,20 +11,17 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.newlecture.web.entity.Notice;
 import com.newlecture.web.service.NoticeService;
 
+@Service
 public class JDBCNoticeService implements NoticeService {
-//	private String url = "jdbc:oracle:thin:@localhost:1521:orcl";
-//	private String uid = "newlec";
-//	private String pwd = "newlec";
-//	private String driver = "oracle.jdbc.driver.OracleDriver";
 
+	@Autowired
 	private DataSource dataSource;
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
 
 	public List<Notice> getList(int page, String field, String query) throws ClassNotFoundException, SQLException {
 
@@ -34,8 +30,6 @@ public class JDBCNoticeService implements NoticeService {
 
 		String sql = "SELECT * FROM NOTICE_VIEW WHERE " + field + " LIKE ? AND NUM BETWEEN ? AND ?";
 
-//		Class.forName(driver);
-//		Connection con = DriverManager.getConnection(url, uid, pwd);
 		Connection con = dataSource.getConnection();
 		PreparedStatement st = con.prepareStatement(sql);
 		st.setString(1, "%" + query + "%");
@@ -69,8 +63,6 @@ public class JDBCNoticeService implements NoticeService {
 
 		String sql = "SELECT COUNT(ID) COUNT FROM NOTICE";
 
-//		Class.forName(driver);
-//		Connection con = DriverManager.getConnection(url, uid, pwd);
 		Connection con = dataSource.getConnection();
 		Statement st = con.createStatement();
 
@@ -95,11 +87,7 @@ public class JDBCNoticeService implements NoticeService {
 		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
 		String sql = "INSERT INTO notice (    " + "    title," + "    writer_id," + "    content," + "    files" + ") VALUES (?,?,?,?)";
 
-//		Class.forName(driver);
-//		Connection con = DriverManager.getConnection(url, uid, pwd);
 		Connection con = dataSource.getConnection();
-		// Statement st = con.createStatement();
-		// st.ex....(sql)
 		PreparedStatement st = con.prepareStatement(sql);
 		st.setString(1, title);
 		st.setString(2, writerId);
@@ -123,11 +111,7 @@ public class JDBCNoticeService implements NoticeService {
 		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
 		String sql = "UPDATE NOTICE " + "SET" + "    TITLE=?," + "    CONTENT=?," + "    FILES=?" + "WHERE ID=?";
 
-//		Class.forName(driver);
-//		Connection con = DriverManager.getConnection(url, uid, pwd);
 		Connection con = dataSource.getConnection();
-		// Statement st = con.createStatement();
-		// st.ex....(sql)
 		PreparedStatement st = con.prepareStatement(sql);
 		st.setString(1, title);
 		st.setString(2, content);
