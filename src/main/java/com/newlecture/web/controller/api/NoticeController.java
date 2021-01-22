@@ -22,4 +22,4 @@ public class NoticeController {
 		List<Notice> list = service.getList(1, "title", "제목");
 		return list;
 	}
-}
+} 
