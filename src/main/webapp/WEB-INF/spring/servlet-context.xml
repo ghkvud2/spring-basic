@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" 
-		xmlns:mvc="http://www.springframework.org/schema/mvc" 
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xmlns:context="http://www.springframework.org/schema/context"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/mvc
@@ -12,9 +10,20 @@
 
 	<!-- <context:annotation-config/> -->
 	<context:component-scan base-package="com.newlecture.web.controller" />
-	
+
 	<!-- URL Mapping -->
-	<mvc:annotation-driven />
+	<mvc:annotation-driven>
+		<mvc:message-converters> 
+			<!-- @ResponseBody로 String 처리할때 한글처리 -->
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
 
 	<!--View Resolver -->
 	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
@@ -35,6 +44,6 @@
 
 	<!--Static Resource -->
 	<mvc:resources location="/static/" mapping="/**" />
-	
-	
+
+
 </beans>
